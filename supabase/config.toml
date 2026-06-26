@@ -1,0 +1,19 @@
+# Minimal Supabase project config. Run `supabase link --project-ref <ref>` to
+# bind this to your hosted project, then `supabase db push` and
+# `supabase functions deploy`.
+project_id = "orchio"
+
+[functions.chat]
+verify_jwt = true
+
+[functions.plan]
+verify_jwt = true
+
+[functions.tasks]
+verify_jwt = true
+
+[functions.energy]
+verify_jwt = true
+
+[functions.stt-token]
+verify_jwt = true
