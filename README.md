@@ -80,6 +80,10 @@ orchio/
 
 ### 1. Install
 
+Built on **Expo SDK 54** (React 19.1, React Native 0.81, Reanimated 4). A
+committed `.npmrc` sets `legacy-peer-deps=true` so installs don't fail on
+React-19-transition peer ranges.
+
 ```bash
 npm install
 cp .env.example .env   # then fill it in (see below)
