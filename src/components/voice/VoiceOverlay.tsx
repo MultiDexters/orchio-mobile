@@ -16,9 +16,10 @@ import { CommandsSheet } from './CommandsSheet';
  * owns the agent lifecycle via useVoiceAgentController.
  */
 // Matches the tab bar height set in app/(app)/_layout.tsx.
-const TAB_BAR_HEIGHT = 60;
-// Gap between the tab bar and the floating controls.
-const CONTROL_GAP = 20;
+const TAB_BAR_HEIGHT = 64;
+// Generous gap so the floating controls clear the tab bar even with SDK 54
+// edge-to-edge (the system nav bar can sit under/around the tab bar).
+const CONTROL_GAP = 40;
 
 export function VoiceOverlay({ bottomOffset }: { bottomOffset?: number }) {
   const { state, onMicPress } = useVoiceAgentController();
