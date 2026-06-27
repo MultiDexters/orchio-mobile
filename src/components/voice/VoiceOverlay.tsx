@@ -1,4 +1,5 @@
 import { Pressable, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MotiView } from 'moti';
 import { HelpCircle } from 'lucide-react-native';
 import { useVoiceStore } from '@/stores/voiceStore';
@@ -14,19 +15,29 @@ import { CommandsSheet } from './CommandsSheet';
  * never mis-tapped). Mounted once in the authed layout. This component also
  * owns the agent lifecycle via useVoiceAgentController.
  */
-export function VoiceOverlay({ bottomOffset = 92 }: { bottomOffset?: number }) {
+// Matches the tab bar height set in app/(app)/_layout.tsx.
+const TAB_BAR_HEIGHT = 60;
+// Gap between the tab bar and the floating controls.
+const CONTROL_GAP = 20;
+
+export function VoiceOverlay({ bottomOffset }: { bottomOffset?: number }) {
   const { state, onMicPress } = useVoiceAgentController();
   const liveTranscript = useVoiceStore((s) => s.liveTranscript);
   const micPermission = useVoiceStore((s) => s.micPermission);
   const unavailable = useVoiceStore((s) => s.unavailable);
   const openCommands = useUiStore((s) => s.openCommands);
+  const insets = useSafeAreaInsets();
+
+  // Sit above the tab bar + the device's bottom safe-area inset so the
+  // mic / Commands buttons never overlap the bottom navigation.
+  const offset = bottomOffset ?? TAB_BAR_HEIGHT + insets.bottom + CONTROL_GAP;
 
   return (
     <>
       <View
         pointerEvents="box-none"
         className="absolute inset-x-0 bottom-0 top-0"
-        style={{ paddingBottom: bottomOffset }}
+        style={{ paddingBottom: offset }}
       >
         {/* Commands button — bottom-left, away from the mic. */}
         <Pressable
