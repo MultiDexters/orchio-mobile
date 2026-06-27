@@ -1,3 +1,4 @@
+import { NativeModules } from 'react-native';
 import { normalizeTranscript } from '@/utils/strings';
 import type { SttCallbacks, SttEngine } from '../types';
 
@@ -45,12 +46,12 @@ export class OnDeviceStt implements SttEngine {
   async isAvailable(): Promise<boolean> {
     const Voice = this.getVoice();
     if (!Voice) return false;
-    try {
-      const res = await Voice.isAvailable();
-      return Boolean(res);
-    } catch {
-      return false;
-    }
+    // The reliable signal is whether the NATIVE module is linked. In Expo Go
+    // it is absent; in a dev/standalone build it is present (named "Voice" on
+    // iOS, "RCTVoice" on Android). The native isAvailable() RPC is flaky and
+    // can return falsy for non-fatal reasons, so don't gate on it.
+    const nm: Record<string, unknown> = NativeModules ?? {};
+    return Boolean(nm.Voice || nm.RCTVoice);
   }
 
   private emit() {
