@@ -13,14 +13,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#0B0F14"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.orchio.app",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Orchio listens for your wake word and your voice so you can plan your day completely hands-free.",
         "NSSpeechRecognitionUsageDescription": "Orchio converts your speech to text to understand commands and conversation.",
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -57,7 +61,8 @@
             "minSdkVersion": 24
           }
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
