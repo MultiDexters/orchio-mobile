@@ -18,6 +18,7 @@ export function VoiceOverlay({ bottomOffset = 92 }: { bottomOffset?: number }) {
   const { state, onMicPress } = useVoiceAgentController();
   const liveTranscript = useVoiceStore((s) => s.liveTranscript);
   const micPermission = useVoiceStore((s) => s.micPermission);
+  const unavailable = useVoiceStore((s) => s.unavailable);
   const openCommands = useUiStore((s) => s.openCommands);
 
   return (
@@ -47,10 +48,21 @@ export function VoiceOverlay({ bottomOffset = 92 }: { bottomOffset?: number }) {
 
         {/* Mic + status bubble — bottom-right. */}
         <View className="absolute bottom-0 right-5 items-end gap-2">
-          {state !== 'OFF' || micPermission === false ? (
+          {(state !== 'OFF' || micPermission === false) && !unavailable ? (
             <StatusBubble state={state} transcript={liveTranscript} />
           ) : null}
-          {micPermission === false ? (
+          {unavailable ? (
+            <MotiView
+              from={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="max-w-[240px] rounded-2xl bg-calm-violet/15 px-3 py-2"
+            >
+              <Text className="text-xs font-medium text-calm-violet">
+                Voice needs a development build — it isn’t available in Expo Go.
+              </Text>
+            </MotiView>
+          ) : null}
+          {micPermission === false && !unavailable ? (
             <MotiView
               from={{ opacity: 0 }}
               animate={{ opacity: 1 }}

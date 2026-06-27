@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useVoiceStore } from '@/stores/voiceStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useAuthStore } from '@/stores/authStore';
+import { toast } from '@/stores/toastStore';
 import { getVoiceAgent } from './agentSingleton';
 
 /**
@@ -10,7 +11,11 @@ import { getVoiceAgent } from './agentSingleton';
  */
 export function pressVoiceMic(): void {
   const agent = getVoiceAgent();
-  const s = useVoiceStore.getState().state;
+  const { state: s, unavailable } = useVoiceStore.getState();
+  if (unavailable) {
+    toast('Voice needs a development build (not available in Expo Go).', 'info');
+    return;
+  }
   switch (s) {
     case 'OFF':
       useSettingsStore.getState().setVoiceEnabled(true);

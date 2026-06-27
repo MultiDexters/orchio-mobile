@@ -168,6 +168,20 @@ export class VoiceAgent {
 
       const engineName = useSettingsStore.getState().sttEngine as SttEngineName;
       this.stt = await createSttEngine(engineName);
+
+      // Voice needs native speech modules that are NOT present in Expo Go.
+      // If unavailable, degrade gracefully — the rest of the app works fine.
+      const sttAvailable = await this.stt.isAvailable();
+      if (!sttAvailable) {
+        useVoiceStore.getState().setUnavailable(true);
+        this.setError(
+          'Voice needs a development build — the speech module isn’t available in Expo Go.',
+        );
+        this.setState('OFF');
+        return;
+      }
+      useVoiceStore.getState().setUnavailable(false);
+
       this.wake = await createWakeEngine(this.stt, {
         preferPorcupine: useSettingsStore.getState().wakeWordEnabled,
       });
@@ -248,8 +262,11 @@ export class VoiceAgent {
       });
       useVoiceStore.getState().setWakeReady(true);
     } catch (err) {
+      // Do NOT loop back through fail()/goArmed() — that spins the same error
+      // (e.g. a missing native module). Surface once and go OFF.
       useVoiceStore.getState().setWakeReady(false);
-      this.fail(err as Error);
+      this.setError((err as Error).message);
+      this.setState('OFF');
     }
   }
 

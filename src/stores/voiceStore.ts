@@ -17,6 +17,9 @@ interface VoiceStoreState {
   micPermission: boolean | null;
   /** Wake-word engine is loaded & listening. */
   wakeReady: boolean;
+  /** True when the speech module isn't present (e.g. running in Expo Go).
+   *  Voice needs a development build; the rest of the app still works. */
+  unavailable: boolean;
   lastError: string | null;
 
   setState: (s: VoiceAgentState) => void;
@@ -24,6 +27,7 @@ interface VoiceStoreState {
   setSpeakingText: (t: string | null) => void;
   setMicPermission: (b: boolean | null) => void;
   setWakeReady: (b: boolean) => void;
+  setUnavailable: (b: boolean) => void;
   setError: (e: string | null) => void;
   reset: () => void;
 }
@@ -34,6 +38,7 @@ export const useVoiceStore = create<VoiceStoreState>((set) => ({
   speakingText: null,
   micPermission: null,
   wakeReady: false,
+  unavailable: false,
   lastError: null,
 
   setState: (state) => set({ state }),
@@ -41,6 +46,7 @@ export const useVoiceStore = create<VoiceStoreState>((set) => ({
   setSpeakingText: (speakingText) => set({ speakingText }),
   setMicPermission: (micPermission) => set({ micPermission }),
   setWakeReady: (wakeReady) => set({ wakeReady }),
+  setUnavailable: (unavailable) => set({ unavailable }),
   setError: (lastError) => set({ lastError }),
   reset: () =>
     set({
