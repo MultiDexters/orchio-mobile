@@ -17,9 +17,9 @@ import { CommandsSheet } from './CommandsSheet';
  */
 // Matches the tab bar height set in app/(app)/_layout.tsx.
 const TAB_BAR_HEIGHT = 64;
-// Generous gap so the floating controls clear the tab bar even with SDK 54
-// edge-to-edge (the system nav bar can sit under/around the tab bar).
-const CONTROL_GAP = 40;
+// Generous gap so the floating controls sit well above the tab bar even with
+// SDK 54 edge-to-edge (the system nav bar can sit under/around the tab bar).
+const CONTROL_GAP = 78;
 
 export function VoiceOverlay({ bottomOffset }: { bottomOffset?: number }) {
   const { state, onMicPress } = useVoiceAgentController();

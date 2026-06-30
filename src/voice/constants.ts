@@ -5,9 +5,10 @@
  */
 
 /** How long the user must pause before we commit (act on) their utterance.
- *  Long enough to survive natural mid-thought pauses, short enough to feel
- *  responsive. 1.6–1.8s is the sweet spot. */
-export const COMMIT_SILENCE_MS = 1700;
+ *  Set to 5s so you can keep talking through long pauses — the agent only
+ *  responds after ~5 seconds of true silence. Lower it (e.g. 2500) if you
+ *  want snappier turn-taking. */
+export const COMMIT_SILENCE_MS = 5000;
 
 /** Quiet gap after TTS finishes before we re-open the mic. Prevents the
  *  tail of our own speech (and echo) from being transcribed. */
